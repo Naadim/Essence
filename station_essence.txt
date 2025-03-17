@@ -1,0 +1,46 @@
+-- Création de la base de données
+CREATE DATABASE IF NOT EXISTS station_essence;
+USE station_essence;
+
+-- Table des produits (essence, gasoil…)
+CREATE TABLE PRODUIT (
+    numProd VARCHAR(50) PRIMARY KEY,
+    Design VARCHAR(100) NOT NULL,
+    stock INT DEFAULT 0
+);
+
+-- Table des entrées de stock
+CREATE TABLE ENTREE (
+    numEntree VARCHAR(50) PRIMARY KEY,
+    stockEntree INT NOT NULL,
+    dateEntree DATE NOT NULL,
+    numProd VARCHAR(50) NOT NULL,
+    FOREIGN KEY (numProd) REFERENCES PRODUIT(numProd) ON DELETE CASCADE
+);
+
+-- Table des achats de carburant
+CREATE TABLE ACHAT (
+    numAchat VARCHAR(50) PRIMARY KEY,
+    numProd VARCHAR(50) NOT NULL,
+    nomClient VARCHAR(100) NOT NULL,
+    nbrLitre INT NOT NULL,
+    dateAchat DATE NOT NULL,
+    FOREIGN KEY (numProd) REFERENCES PRODUIT(numProd) ON DELETE CASCADE
+);
+
+-- Table des services (lavage, gonflage…)
+CREATE TABLE SERVICE (
+    numServ VARCHAR(50) PRIMARY KEY,
+    service VARCHAR(100) NOT NULL,
+    prix INT NOT NULL
+);
+
+-- Table des entretiens de véhicules
+CREATE TABLE ENTRETIEN (
+    numEntr VARCHAR(50) PRIMARY KEY,
+    numServ VARCHAR(50) NOT NULL,
+    immatriculation_voiture VARCHAR(20) NOT NULL,
+    nomClient VARCHAR(100) NOT NULL,
+    dateEntretien DATE NOT NULL,
+    FOREIGN KEY (numServ) REFERENCES SERVICE(numServ) ON DELETE CASCADE
+);
